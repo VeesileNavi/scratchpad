@@ -1,38 +1,42 @@
-List<DateTime> getDateTimeInHourRange(DateTime selectedDate, List<int> hourRange) {
-  assert(hours.length==2,'There is must be only 2 members: period start an period end');
-  assert(hours.first<hours.last, 'Period end cannot be less than period start');
+///This method takes a date (based on which to return the interval), an array of two elements (the beginning and end of the interval), and a period in minutes (30 by default).
 
-  final firstTimeMinutes = hourRange.first<selectedDate.hour
-  ?selectedDate.minute
+///At the output, we will get a list of DateTime instances with a given period, obtained based on the beginning and end of the interval in hours.
+
+List<DateTime> getDateTimeInHourRange(DateTime date, List<int> hourRange, [int minutesPeriod = 30]) {
+  assert(hourRange.length==2,'There is must be only 2 members: period start an period end');
+  assert(hourRange.first<hourRange.last, 'Period end cannot be less than period start');
+
+  final firstTimeMinutes = hourRange.first<date.hour
+  ?date.minute
   :0;
   
   final firstTime = DateTime(
-        selectedDate.year, 
-        selectedDate.month, 
-        selectedDate.day, 
-        math.max(hourRange.first, selectedDate.hour),
+        date.year, 
+        date.month, 
+        date.day, 
+        math.max(hourRange.first, date.hour),
         firstTimeMinutes,
     );
   
   
   final lastTime = DateTime(
-        selectedDate.year, 
-        selectedDate.month, 
-        selectedDate.day, 
+        date.year, 
+        date.month, 
+        date.day, 
         hourRange.last,
         );
 
   
   final startTime = firstTime.add(
-          Duration(minutes: 30 - firstTime.minute % 30,),
+          Duration(minutes: minutesPeriod - firstTime.minute % minutesPeriod,),
       );
       
   final List<DateTime> output = [];
   
     for (DateTime time = startTime; time.isBefore(lastTime) || time.isAtSameMomentAs(lastTime);
-    time = time.add(const Duration(minutes: 30))) {
+    time = time.add(Duration(minutes: minutesPeriod))) {
       output.add(time);
     }
   
-    return output;
-  }
+  return output;
+}
