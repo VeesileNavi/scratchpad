@@ -1,5 +1,5 @@
 List<DateTime> getDateTimeInHourRange(DateTime selectedDate, List<int> hourRange) {
-  assert(hours.length<=2,'There is must be only 2 members: period start an period end');
+  assert(hours.length==2,'There is must be only 2 members: period start an period end');
   assert(hours.first<hours.last, 'Period end cannot be less than period start');
 
   final firstTimeMinutes = hourRange.first<selectedDate.hour
